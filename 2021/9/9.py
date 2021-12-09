@@ -1,37 +1,30 @@
 # This is the just the crudest and over engineered solution possible. Please spare me.
 
 lines = []
-with open("input.txt") as file:
+with open("testinput.txt") as file:
     lines = [x.strip('\n') for x in file.readlines()]
 for i in range(len(lines)):
     lines[i] = [int(x) for x in str(lines[i])]
 
 # Searches for the lowest given point using recursion
-def findLowPoint(lines, x, y):
-    neighboridx = []
-    if (y - 1) >= 0:
-        neighboridx.append((0, -1))
-    if (y + 1) < len(lines):
-        neighboridx.append((0, 1))
-    if (x - 1) >= 0:
-        neighboridx.append((-1, 0))
-    if (x + 1) < len(lines[y]):
-        neighboridx.append((1, 0))
+def isLowPoint(x, y):
     neighbors = []
-    for idx in neighboridx:
-        neighbors.append(lines[y + idx[1]][x + idx[0]])
-    lowest = min(neighbors)
-    if lowest > lines[y][x]:
-        return (x, y)
-    else:
-         return findLowPoint(lines, x + neighboridx[neighbors.index(lowest)][0], y + neighboridx[neighbors.index(lowest)][1])
+    if (y - 1) >= 0 and (0 <= x or x < len(lines)):
+        neighbors.append(lines[y - 1][x])
+    if (y + 1) < len(lines) and (0 <= x or x < len(lines)):
+        neighbors.append(lines[y + 1][x])
+    if (x - 1) >= 0 and (0 <= y or y < len(lines)):
+        neighbors.append(lines[y][x - 1])
+    if (0 <= y or y < len(lines)) and (x + 1) < len(lines[y]):
+        neighbors.append(lines[y][x + 1])
+    return lines[y][x] < min(neighbors)
+
 lowPointList = []
 # Iterate over all fields and invoke recursion
 for j in range(len(lines)):
     for i in range(len(lines[j])):
-        lowPoint = findLowPoint(lines, i, j)
-        if lowPoint not in lowPointList:
-            lowPointList.append(lowPoint)
+        if isLowPoint(i, j):
+            lowPointList.append((i, j))
 
 # All low points found, calculate risk level
 sum = 0
