@@ -21,9 +21,9 @@ for line in lines:
             break
         if i == (len(line) - 1):
             autoCompleteScore = 0
-            for j in range(len(stack) - 1, -1, -1):
+            while stack:
                 autoCompleteScore *= 5
-                autoCompleteScore += autoCompleteScoreTable[matching2[stack[j]]]
+                autoCompleteScore += autoCompleteScoreTable[matching2[stack.pop()]]
             autoCompleteScoreList.append(autoCompleteScore)
 autoCompleteScoreList.sort()
 print(syntaxScore)
