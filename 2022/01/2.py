@@ -11,4 +11,4 @@ for line in lines:
         elves.append(0)
 elves.sort()
 
-print(elves[-1] + elves[-2] + elves[-3])
+print(sum(elves[-3:]))
