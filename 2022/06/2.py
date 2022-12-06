@@ -3,12 +3,8 @@ with open("input.txt") as file:
     lines = [x.strip('\n') for x in file.readlines()]
 
 stream = lines[0]
-queue = []
-for i in range(len(stream)):
-    queue.append(stream[i])
-    if len(queue) >= 14:
-        if len(queue) == len(set(queue)):
-            print(i+1)
-            break
-        queue.pop(0)
-
+windowSize = 14
+for i in range(windowSize, len(stream)):
+    if windowSize == len(set(stream[i-windowSize:i])):
+        print(i)
+        break
